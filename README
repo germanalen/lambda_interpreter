@@ -1,0 +1,12 @@
+Demonstration:
+$ build/lambda.out parigot.lm
+
+REPL:
+$ build/lambda.out
+
+The interpreter uses De Bruijn indexing.
+It is unreadable, but I had little time.
+
+The interpreter reduces lines in files until a line stops changing.
+
+In REPL mode it does only 1 beta reduction at a time.

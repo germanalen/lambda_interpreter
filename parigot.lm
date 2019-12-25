@@ -1,0 +1,115 @@
+; booleans
+define T $$ #1
+define F $$ #0
+define cond $ #0
+define and $$ cond #1 #0 F
+define not $ cond #0 F T
+define or $$ cond #1 T (cond #0 T F)
+
+; parigot numbers
+define 0 $$ #1
+define succ $$$ #0 #2 (#2 #1 #0)
+define pred $ #0 undef ($$ #1)
+define add $$ #1 #0 ($$ succ #0)
+define sub $$ #0 #1 ($ pred)
+define mult $$ #1 0 ($$ add #2 #0)
+define is_0 $ #0 T ($$ F)
+define num_print $ #0 0. ($$ #0 1.)
+
+
+define 1 succ 0
+define 2 succ 1
+define 3 succ 2
+define 4 succ 3
+define 5 succ 4
+define 6 succ 5
+define 7 succ 6
+define 8 succ 7
+define 9 succ 8
+define 10 succ 9
+
+
+; parigot list
+define nil $$ #1
+define cons $$$$ #0 #3 #2 (#2 #1 #0)
+define is_nil $ #0 T ($$$ F)
+define head $ #0 undef ($$$ #2)
+define tail $ #0 undef ($$$ #1)
+define append $$ #1 #0 ($$$ cons #2 #0)
+define list_print $ #0 . ($$$ #2 #0)
+
+
+define l1 cons a nil
+define l1 append l1 l1
+define l1 append l1 l1
+define l1 append l1 l1
+define l1 append l1 l1
+define abc (cons a (cons b (cons c nil)))
+
+
+This is how numbers are encoded.
+0: 0
+1: 1
+2: 2
+
+
+~
+~
+
+
+'num_print is more readable. 
+0: (num_print 0)
+1: (num_print 1)
+2: (num_print 2)
+5: (num_print 5)
+
+
+~
+~
+
+
+These encodings are extremely inefficient.
+'mult '4 '4 takes over '20 secs on my laptop.
+BTW, these "print" statement are just lambda expressions.
+I appended ' to defined identifiers to avoid inserting actual encodings.
+...
+Any second now...
+'mult '4 '4 =>
+mult 4 4
+
+
+~
+~
+
+
+Because of lazy evaluation (I think)
+'num_print ('mult '4 '4) is faster than ('mult '4 '4)
+'num_print ('mult '4 '4) =>
+(num_print (mult 4 4))
+
+
+~
+~
+
+
+Here are some interesting things I noticed.
+A function that increments 'and then decrements a number evaluates to an identity function (lambda x.x).
+In De Bruijn indexing...
+$ pred (succ #0)
+
+
+~
+~
+
+
+A function that adds x to a list 'and then takes the 'head evaluates to a function that takes anything 'and returns x.
+$ head (cons x #0)
+
+
+~
+~
+
+I wanted to program something visual.
+An expression that would evaluate to a list of ascii characters.
+The list would look like a picture if the terminal had the right width. 
+Unfortunately, these encodings were too slow. There are more efficient encodings. They use binary representation ('or other bases).
